@@ -1,4 +1,19 @@
-﻿using System;
+﻿//Program Name:        Simple Calculator
+//
+//Description:         This is a simple calculator app that will perform basic arithmetic, one operation at a time
+//
+//Date  Beginning:     07/14/2019
+//
+//Date Edited:         07/15/2019
+//
+//Date Complete:       07/15/2019
+//
+//Programmer:          Adam Knitter
+//
+//Notes:                **it needs to alert the user when there are too many digits in a total to display
+//
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,10 +28,11 @@ namespace Calculator_C_Sharp
     public partial class frmBasic : Form
     {
 
-        double? runningTotal = null;
-        string currentSelection = string.Empty;
-        double? numberTwo = null;
-        char functionSign = ' ';
+        //initialize some variables
+        double? runningTotal = null;//holds the current total being tallied
+        string currentSelection = string.Empty;//holds the current number being entered
+        double? numberTwo = null;//used in calculations
+        char functionSign = ' ';//stores the selected function sign
         bool totalFlag = false;
 
         public frmBasic()
@@ -24,16 +40,22 @@ namespace Calculator_C_Sharp
             InitializeComponent();
         }
 
+        //each number performs the same action for its digit
         private void btnZero_Click(object sender, EventArgs e)
         {
+            //checks if there is a total in the display
             if (totalFlag == true)
             {
+                //clears a variable for a new number
                 currentSelection = string.Empty;
                 totalFlag = false;
             }
+            //checks if the new digit will fit in the display
             if (currentSelection.Length < 17)
             {
+                //adds the selection to the variable
                 currentSelection = ($"{currentSelection}0");
+                //displays the updated variable to the user
                 lblDisplay.Text = currentSelection;
             }
         }
@@ -164,6 +186,7 @@ namespace Calculator_C_Sharp
             }
         }
 
+        //this button allows the user to clear the memory and start fresh
         private void btnClear_Click(object sender, EventArgs e)
         {
             runningTotal = null;
@@ -173,7 +196,7 @@ namespace Calculator_C_Sharp
             functionSign = ' ';
             totalFlag = false;
         }
-
+       
         private void btnPlus_Click(object sender, EventArgs e)
         {
 
@@ -194,11 +217,11 @@ namespace Calculator_C_Sharp
                 }
                 else if (functionSign != ' ')
                 {
-                    //runningTotal = (runningTotal + numberTwo);//adds the current selection to the total
+                    //calls a method that will perform the desired function
                     runningTotal = BasicFunction(runningTotal, numberTwo, functionSign);                    
                 }
 
-                functionSign = '+';
+                functionSign = '+';//sets this function as selected
                 lblDisplay.Text = runningTotal.ToString();//displays the current total
 
                 //resets variables
@@ -336,10 +359,13 @@ namespace Calculator_C_Sharp
             }
         }
 
+        //this method will perform the calculations as needed
         public double? BasicFunction(double? numOne, double? numTwo, char functionSign)
         {
+            //initialize the working variable
             double? theAnswer = 0;
 
+            //this switch is designed to check which sign has been selected by the user then perform its calculation
             switch (functionSign)
             {
                 case '+':
@@ -361,23 +387,28 @@ namespace Calculator_C_Sharp
             return theAnswer;
         }
 
+        //this button will add decimals to the mix
         private void btnDecimal_Click(object sender, EventArgs e)
         {
+            //checks if there is a total and clears it
             if (totalFlag == true)
             {
                 currentSelection = string.Empty;
                 totalFlag = false;
             }
+            //checks if there is a number yet and adds a 0 in front
             if (currentSelection.Length == 0)
             {
                 currentSelection = ($"0.");
                 lblDisplay.Text = currentSelection;
             }
+            //does nothing if decimal already present
             else if (currentSelection.ToLower().Contains('.'))
             {
 
             }
-            else if (currentSelection.Length < 17)
+            //add decimal to current number if it will fit
+            else if (currentSelection.Length < 16)
             {
                 currentSelection = ($"{currentSelection}.");
                 lblDisplay.Text = currentSelection;
